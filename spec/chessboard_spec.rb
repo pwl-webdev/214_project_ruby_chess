@@ -40,6 +40,50 @@ describe Chessboard do
 			end
 		end
 		it "displays chessboard correctly" do
+			puts ""
+			subject.display()
+		end
+	end
+	context "Allowed pawn moves are performed and marked on board" do
+		puts "Allowed pawn moves are performed and marked on board"
+		it "moves pawn on board" do
+			expect(subject.makeMove("E7-E6")).to be_truthy
+			expect(subject.board["E6"]).to eql("\u265F".encode("utf-8"))
+			expect(subject.board["E7"]).to eql("X")
+			subject.display()
+			
+			expect(subject.makeMove("D2-D3")).to be_truthy
+			expect(subject.board["D3"]).to eql("\u2659".encode("utf-8"))
+			expect(subject.board["D2"]).to eql("X")	
+			subject.display()
+
+			expect(subject.makeMove("E6-E5")).to be_truthy
+			expect(subject.board["E5"]).to eql("\u265F".encode("utf-8"))
+			expect(subject.board["E6"]).to eql("X")
+			subject.display()
+
+			expect(subject.makeMove("D3-D4")).to be_truthy
+			expect(subject.board["D4"]).to eql("\u2659".encode("utf-8"))
+			expect(subject.board["D3"]).to eql("X")	
+			subject.display()
+
+			expect(subject.makeMove("E5-D4")).to be_truthy
+			expect(subject.board["D4"]).to eql("\u265F".encode("utf-8"))
+			expect(subject.board["E5"]).to eql("X")
+			subject.display()
+		end
+	end
+	context "Not Allowed pawn moves are not performed" do
+		puts "Allowed pawn moves are performed and marked on board"
+		it "does not allow incorrect pawn moves" do
+			expect(subject.makeMove("E7-C6")).to be_falsey
+			expect(subject.board["E7"]).to eql("\u265F".encode("utf-8"))
+			expect(subject.board["C6"]).to eql("X")
+			subject.display()
+
+			expect(subject.makeMove("D2-D1")).to be_falsey
+			expect(subject.board["D2"]).to eql("\u2659".encode("utf-8"))
+			expect(subject.board["D1"]).to eql("\u2655".encode("utf-8"))
 			subject.display()
 		end
 	end
