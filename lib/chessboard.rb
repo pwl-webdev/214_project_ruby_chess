@@ -56,7 +56,12 @@ class Chessboard
 		case board[move[0]]
 		when "\u2659", "\u265F"
 			moveValid = validatePawn(input)
+		when "\u2658", "\u265E"
+			moveValid = validateKnight(input)
 		end
+		if moveValid
+			updateBoard(input)
+		end		
 		return moveValid
 	end
 	def validatePawn(input)
@@ -64,25 +69,51 @@ class Chessboard
 		if move[0][0] == move[1][0]
 			if (board[move[0]] == "\u2659" && move[1][1].to_i - move[0][1].to_i == 1) || (board[move[0]] == "\u265F" && move[1][1].to_i - move[0][1].to_i == -1)
 				if board[move[1]] == "X"
-					symbol = board[move[0]]
-					board[move[1]] = symbol
-					board[move[0]] = "X"
 					return true
 				end
 			end
 		elsif (move[1][0].ord - move[0][0].ord).abs == 1
 			if (board[move[0]] == "\u2659") && (move[1][1].to_i - move[0][1].to_i) == 1 && black_figures.include?(board[move[1]])
-				symbol = board[move[0]]
-				board[move[1]] = symbol
-				board[move[0]] = "X"
 				return true
 			elsif board[move[0]] == "\u265F" && (move[1][1].to_i - move[0][1].to_i) == -1 && white_figures.include?(board[move[1]])
-				symbol = board[move[0]]
-				board[move[1]] = symbol
-				board[move[0]] = "X"
 				return true
 			end	
 		end
 		return false
+	end
+	def validateKnight(input)
+		move = input.split("-")
+		x = move[0][0].ord
+		y = move[0][1].to_i
+		dx = (move[1][0].ord - move[0][0].ord)
+		dy = (move[1][1].to_i - move[0][1].to_i)
+		if (dx.abs == 2 && dy.abs == 1)
+			if (board["#{(x + dx/2).chr}#{y.to_s}"] == "X" && board["#{(x + dx).chr}#{y.to_s}"] == "X") || (board["#{(x).chr}#{(y+dy).to_s}"] == "X" && board["#{(x+dx/2).chr}#{(y+dy).to_s}"] == "X")
+				puts "inside 11"
+				if board[move[0]] == "\u2658" && (black_figures.include?(board[move[1]]) || board[move[1]] == "X")	
+					return true
+				elsif board[move[0]] == "\u265E" && (white_figures.include?(board[move[1]]) || board[move[1]] == "X")
+					return true
+				end
+			end
+		elsif (dx.abs == 1 && dy.abs == 2)
+			if (board["#{(x + dx).chr}#{y.to_s}"] == "X" && board["#{(x + dx).chr}#{(y+dy).to_s}"] == "X") || (board["#{(x).chr}#{(y+dy/2).to_s}"] == "X" && board["#{(x).chr}#{(y+dy).to_s}"] == "X")
+				puts "inside 21"
+				if board[move[0]] == "\u2658" && (black_figures.include?(board[move[1]]) || board[move[1]] == "X")	
+					return true
+				elsif board[move[0]] == "\u265E" && (white_figures.include?(board[move[1]]) || board[move[1]] == "X")
+					return true
+				end
+			end
+		end
+		return false
+	end
+
+	private
+	def updateBoard(input)
+		move = input.split("-")
+		symbol = board[move[0]]
+		board[move[1]] = symbol
+		board[move[0]] = "X"
 	end
 end
