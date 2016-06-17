@@ -26,5 +26,10 @@ class Chessboard
 		("A".."H").each do |l|
 			board["#{l}7"] = "\u265F".encode("utf-8")
 		end
+		("A".."H").each do |l|
+			(3..6).each do |n|
+				board["#{l}#{n}"] = "X"
+			end
+		end
 	end
 end

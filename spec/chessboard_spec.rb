@@ -32,5 +32,12 @@ describe Chessboard do
 				expect(subject.board["#{l}7"]).to eql("\u265F".encode("utf-8"))
 			end	
 		end
+		it "empty places on chessboard are initialized as 'X'" do
+			("A".."H").each do |l|
+				(3..6).each do |n|
+					expect(subject.board["#{l}#{n}"]).to eql("X")
+				end
+			end
+		end
 	end
 end
