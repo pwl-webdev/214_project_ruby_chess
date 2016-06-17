@@ -39,5 +39,8 @@ describe Chessboard do
 				end
 			end
 		end
+		it "displays chessboard correctly" do
+			subject.display()
+		end
 	end
 end

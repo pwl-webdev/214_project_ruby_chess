@@ -26,10 +26,23 @@ class Chessboard
 		("A".."H").each do |l|
 			board["#{l}7"] = "\u265F".encode("utf-8")
 		end
+		# initializing blank spaces
 		("A".."H").each do |l|
 			(3..6).each do |n|
 				board["#{l}#{n}"] = "X"
 			end
+		end
+	end
+	def display
+		puts "   A B C D E F G H"
+		(8).downto(1) do |n|
+			print "#{n}  "
+			("A".."H").each do |l|
+
+				print board["#{l}#{n.to_s}"]
+				print " "
+			end
+				puts ""
 		end
 	end
 end
