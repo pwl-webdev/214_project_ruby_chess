@@ -142,4 +142,154 @@ describe Chessboard do
 			subject.display()
 		end
 	end
+	context "Correct queen moves are performed" do
+		it "performs queen moves" do
+			expect(subject.makeMove("D7-D6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("D6-D5")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("D8-D6")).to be_truthy
+			expect(subject.board["D6"]).to eql("\u265B".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("D6-F4")).to be_truthy
+			expect(subject.board["F4"]).to eql("\u265B".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("F4-A4")).to be_truthy
+			expect(subject.board["A4"]).to eql("\u265B".encode("utf-8"))
+			subject.display()
+
+			expect(subject.makeMove("A2-A3")).to be_truthy
+			expect(subject.makeMove("A4-A3")).to be_truthy
+			expect(subject.board["A3"]).to eql("\u265B".encode("utf-8"))
+			subject.display()
+
+		end
+		it "does not allow incorrect queen moves" do
+			expect(subject.makeMove("D7-D6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("D6-D5")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("D8-D6")).to be_truthy
+			expect(subject.board["D6"]).to eql("\u265B".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("D6-B5")).to be_falsey
+			expect(subject.board["B5"]).to eql("X")
+			subject.display()
+		end
+	end
+	context "bishop moves" do
+		it "correct are performed" do
+			expect(subject.makeMove("D7-D6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("C8-F5")).to be_truthy
+			expect(subject.board["F5"]).to eql("\u265D".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("F5-D3")).to be_truthy
+			expect(subject.board["D3"]).to eql("\u265D".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("D3-A6")).to be_truthy
+			expect(subject.board["A6"]).to eql("\u265D".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("D2-D3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("A6-D3")).to be_truthy
+			expect(subject.board["D3"]).to eql("\u265D".encode("utf-8"))
+			subject.display()
+		end
+		it "does not allow incorrect" do
+			expect(subject.makeMove("D7-D6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("C8-F5")).to be_truthy
+			expect(subject.board["F5"]).to eql("\u265D".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("F5-H5")).to be_falsey
+			expect(subject.board["H5"]).to eql("X")
+			subject.display()
+			expect(subject.makeMove("F5-E3")).to be_falsey
+			expect(subject.board["E3"]).to eql("X")
+			subject.display()
+		end
+	end
+	context "rook moves" do
+		it "correct are performed" do
+			expect(subject.makeMove("H2-H3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("H3-H4")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("H1-H3")).to be_truthy
+			expect(subject.board["H3"]).to eql("\u2656".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("H3-C3")).to be_truthy
+			expect(subject.board["C3"]).to eql("\u2656".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("C3-C6")).to be_truthy
+			expect(subject.board["C6"]).to eql("\u2656".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("D7-D6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("C6-D6")).to be_truthy
+			expect(subject.board["D6"]).to eql("\u2656".encode("utf-8"))
+			subject.display()
+		end
+		it "does not allow incorrect" do
+			expect(subject.makeMove("H2-H3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("H3-H4")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("H1-H3")).to be_truthy
+			expect(subject.board["H3"]).to eql("\u2656".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("H3-F5")).to be_falsey
+			expect(subject.board["F5"]).to eql("X")
+			subject.display()
+			expect(subject.makeMove("H3-B5")).to be_falsey
+			expect(subject.board["B5"]).to eql("X")
+			subject.display()
+		end
+	end
+	context "king moves" do
+		it "correct moves are performed" do
+			expect(subject.makeMove("E2-E3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E1-E2")).to be_truthy
+			expect(subject.board["E2"]).to eql("\u2654".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("E2-D3")).to be_truthy
+			expect(subject.board["D3"]).to eql("\u2654".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("D3-E4")).to be_truthy
+			expect(subject.board["E4"]).to eql("\u2654".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("E4-F5")).to be_truthy
+			expect(subject.board["F5"]).to eql("\u2654".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("E7-E6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("F5-E6")).to be_truthy
+			expect(subject.board["E6"]).to eql("\u2654".encode("utf-8"))
+			subject.display()
+		end
+		it "does not allow incorrect" do
+			expect(subject.makeMove("E2-E3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E1-E2")).to be_truthy
+			expect(subject.board["E2"]).to eql("\u2654".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("E2-D3")).to be_truthy
+			expect(subject.board["D3"]).to eql("\u2654".encode("utf-8"))
+			subject.display()
+			expect(subject.makeMove("D3-D5")).to be_falsey
+			expect(subject.board["D5"]).to eql("X")
+			subject.display()
+			expect(subject.makeMove("D3-B4")).to be_falsey
+			expect(subject.board["B4"]).to eql("X")
+			subject.display()
+		end
+	end
+	context "verifies if" do
+		it "check happened" do
+		end
+		it "mat happened" do
+		end
+	end
 end

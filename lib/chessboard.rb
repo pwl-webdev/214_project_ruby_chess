@@ -58,6 +58,14 @@ class Chessboard
 			moveValid = validatePawn(input)
 		when "\u2658", "\u265E"
 			moveValid = validateKnight(input)
+		when "\u2655", "\u265B"
+			moveValid = validateQueen(input)
+		when "\u2657", "\u265D"
+			moveValid = validateBishop(input)
+		when "\u2656", "\u265C"
+			moveValid = validateRook(input)
+		when "\u2654", "\u265A"
+			moveValid = validateKing(input)
 		end
 		if moveValid
 			updateBoard(input)
@@ -89,7 +97,6 @@ class Chessboard
 		dy = (move[1][1].to_i - move[0][1].to_i)
 		if (dx.abs == 2 && dy.abs == 1)
 			if (board["#{(x + dx/2).chr}#{y.to_s}"] == "X" && board["#{(x + dx).chr}#{y.to_s}"] == "X") || (board["#{(x).chr}#{(y+dy).to_s}"] == "X" && board["#{(x+dx/2).chr}#{(y+dy).to_s}"] == "X")
-				puts "inside 11"
 				if board[move[0]] == "\u2658" && (black_figures.include?(board[move[1]]) || board[move[1]] == "X")	
 					return true
 				elsif board[move[0]] == "\u265E" && (white_figures.include?(board[move[1]]) || board[move[1]] == "X")
@@ -98,7 +105,6 @@ class Chessboard
 			end
 		elsif (dx.abs == 1 && dy.abs == 2)
 			if (board["#{(x + dx).chr}#{y.to_s}"] == "X" && board["#{(x + dx).chr}#{(y+dy).to_s}"] == "X") || (board["#{(x).chr}#{(y+dy/2).to_s}"] == "X" && board["#{(x).chr}#{(y+dy).to_s}"] == "X")
-				puts "inside 21"
 				if board[move[0]] == "\u2658" && (black_figures.include?(board[move[1]]) || board[move[1]] == "X")	
 					return true
 				elsif board[move[0]] == "\u265E" && (white_figures.include?(board[move[1]]) || board[move[1]] == "X")
@@ -108,7 +114,141 @@ class Chessboard
 		end
 		return false
 	end
-
+	def validateQueen (input)
+		move = input.split("-")
+		x = move[0][0].ord
+		y = move[0][1].to_i
+		dx = (move[1][0].ord - move[0][0].ord)
+		dy = (move[1][1].to_i - move[0][1].to_i)
+		valid = true
+		if dx == 0
+			#puts "dx == 0"
+			(dy.abs-1).times do |l|
+				#puts "dy #{dy} board: #{x.chr}#{(y+l+1).to_s} board2: #{x.chr}#{(y-l-1).to_s}"
+				if board["#{x.chr}#{(y+l+1).to_s}"] != "X" && dy > 0
+					valid = false
+				elsif board["#{x.chr}#{(y-l-1).to_s}"] != "X" && dy < 0
+					valid = false
+				end	
+			end
+		elsif dy == 0
+			#puts "dy == 0, dx #{dx} dx.abs #{(dx.abs)-1}"
+			(dx.abs-1).times do |l|
+				if board["#{(x+l+1).chr}#{(y).to_s}"] != "X" && dx > 0
+					valid = false
+				elsif board["#{(x-l-1).chr}#{(y).to_s}"] != "X" && dx < 0
+					valid = false
+				end	
+			end
+		elsif dx.abs == dy.abs
+			#puts "dx == dy"
+			(dy.abs - 1).times do |l|
+				if board["#{(x+l+1).chr}#{(y+l+1).to_s}"] != "X" && dy > 0 && dx > 0
+					valid = false
+				elsif board["#{(x-l-1).chr}#{(y+l+1).to_s}"] != "X" && dy > 0 && dx < 0
+					valid = false
+				elsif board["#{(x-l-1).chr}#{(y-l-1).to_s}"] != "X" && dy < 0 && dx < 0
+					valid = false
+				elsif board["#{(x+l+1).chr}#{(y-l-1).to_s}"] != "X" && dy < 0 && dx > 0
+					valid = false
+				end	
+			end
+		else
+			valid = false
+		end	
+		if valid
+			if board[move[1]] == "X" || (board[move[0]] == "\u2655" && (black_figures.include?(board[move[1]])))
+				return true
+			elsif board[move[1]] == "X" || (board[move[0]] == "\u265B" && (white_figures.include?(board[move[1]])))
+				return true
+			end
+		else
+			return false
+		end	
+	end
+	def validateBishop(input)
+		move = input.split("-")
+		x = move[0][0].ord
+		y = move[0][1].to_i
+		dx = (move[1][0].ord - move[0][0].ord)
+		dy = (move[1][1].to_i - move[0][1].to_i)
+		valid = true
+		if dx.abs == dy.abs
+			#puts "dx == dy"
+			(dy.abs - 1).times do |l|
+				if board["#{(x+l+1).chr}#{(y+l+1).to_s}"] != "X" && dy > 0 && dx > 0
+					valid = false
+				elsif board["#{(x-l-1).chr}#{(y+l+1).to_s}"] != "X" && dy > 0 && dx < 0
+					valid = false
+				elsif board["#{(x-l-1).chr}#{(y-l-1).to_s}"] != "X" && dy < 0 && dx < 0
+					valid = false
+				elsif board["#{(x+l+1).chr}#{(y-l-1).to_s}"] != "X" && dy < 0 && dx > 0
+					valid = false
+				end	
+			end
+		else
+			valid = false
+		end	
+		if valid
+			if board[move[1]] == "X" || (board[move[0]] == "\u2657" && (black_figures.include?(board[move[1]])))
+				return true
+			elsif board[move[1]] == "X" || (board[move[0]] == "\u265D" && (white_figures.include?(board[move[1]])))
+				return true
+			end
+		else
+			return false
+		end	
+	end
+	def validateRook(input)
+		move = input.split("-")
+		x = move[0][0].ord
+		y = move[0][1].to_i
+		dx = (move[1][0].ord - move[0][0].ord)
+		dy = (move[1][1].to_i - move[0][1].to_i)
+		valid = true
+		if dx == 0
+			#puts "dx == 0"
+			(dy.abs-1).times do |l|
+				#puts "dy #{dy} board: #{x.chr}#{(y+l+1).to_s} board2: #{x.chr}#{(y-l-1).to_s}"
+				if board["#{x.chr}#{(y+l+1).to_s}"] != "X" && dy > 0
+					valid = false
+				elsif board["#{x.chr}#{(y-l-1).to_s}"] != "X" && dy < 0
+					valid = false
+				end	
+			end
+		elsif dy == 0
+			#puts "dy == 0, dx #{dx} dx.abs #{(dx.abs)-1}"
+			(dx.abs-1).times do |l|
+				if board["#{(x+l+1).chr}#{(y).to_s}"] != "X" && dx > 0
+					valid = false
+				elsif board["#{(x-l-1).chr}#{(y).to_s}"] != "X" && dx < 0
+					valid = false
+				end	
+			end
+		else
+			valid = false
+		end
+		if valid
+			if board[move[1]] == "X" || (board[move[0]] == "\u2656" && (black_figures.include?(board[move[1]])))
+				return true
+			elsif board[move[1]] == "X" || (board[move[0]] == "\u265C" && (white_figures.include?(board[move[1]])))
+				return true
+			end
+		else
+			return false
+		end		
+	end
+	def validateKing(input)
+		move = input.split("-")
+		if (move[1][0].ord - move[0][0].ord).abs == 1 || (move[1][1].to_i - move[0][1].to_i).abs == 1
+			if (board[move[0]] == "\u2654") && (black_figures.include?(board[move[1]]) || board[move[1]] == "X")
+				return true
+			elsif (board[move[0]] == "\u265A") && (white_figures.include?(board[move[1]]) || board[move[1]] == "X")
+				return true
+			end	
+		end
+		return false
+	end
 	private
 	def updateBoard(input)
 		move = input.split("-")
