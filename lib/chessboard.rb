@@ -260,19 +260,21 @@ class Chessboard
 		elsif white_figures.include?(board[move[1]])
 			hypotetical_move = "#{move[1]}-#{black_king}"
 		end
-		case board[move[1]]
-		when "\u2659", "\u265F"
-			check = validatePawn(hypotetical_move)
-		when "\u2658", "\u265E"
-			check = validateKnight(hypotetical_move)
-		when "\u2655", "\u265B"
-			check = validateQueen(hypotetical_move)
-		when "\u2657", "\u265D"
-			check = validateBishop(hypotetical_move)
-		when "\u2656", "\u265C"
-			check = validateRook(hypotetical_move)
-		when "\u2654", "\u265A"
-			check = validateKing(hypotetical_move)
+		if hypotetical_move.length == 5
+			case board[move[1]]
+			when "\u2659", "\u265F"
+				check = validatePawn(hypotetical_move)
+			when "\u2658", "\u265E"
+				check = validateKnight(hypotetical_move)
+			when "\u2655", "\u265B"
+				check = validateQueen(hypotetical_move)
+			when "\u2657", "\u265D"
+				check = validateBishop(hypotetical_move)
+			when "\u2656", "\u265C"
+				check = validateRook(hypotetical_move)
+			when "\u2654", "\u265A"
+				check = validateKing(hypotetical_move)
+			end
 		end
 		if check
 			puts "check! #{hypotetical_move}"
