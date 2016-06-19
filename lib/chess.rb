@@ -1,3 +1,4 @@
+require "yaml"
 require_relative 'chessboard'
 
 class Chess
@@ -18,23 +19,23 @@ class Chess
 						white_turn = false
 					end
 					chessboard.check?(input)
-				elsif input = "LOAD"
+				elsif input == "LOAD"
 					loadGame
-				elsif input = "SAVE"
-					saveGame
+				elsif input == "SAVE"
+					saveGame(chessboard)
 				end
 			else
-				puts "Blacks: MMake move in format A1-B2. Type 'load'/'save' if you wish"
+				puts "Blacks: Make move in format A1-B2. Type 'load'/'save' if you wish"
 				input = gets.chomp.upcase
 				if inputValid?(input, white_turn)
 					if chessboard.makeMove(input)
 						white_turn = true
 					end
 					chessboard.check?(input)
-				elsif input = "LOAD"
+				elsif input == "LOAD"
 					loadGame
-				elsif input = "SAVE"
-					saveGame
+				elsif input == "SAVE"
+					saveGame(chessboard)
 				end
 			end
 		end
@@ -53,9 +54,22 @@ class Chess
 		return valid
 	end
 
-	def loadGame
+	def saveGame(chessboard)
+		saveFile = File.new("savegame.txt","w+")
+		serialized_object = YAML::dump(chessboard)
+		saveFile.puts(serialized_object)
+		saveFile.close
+		puts " Game was saved successfuly! "
+		return true
 	end
-	def saveGame
+
+	def loadGame
+		saveFile = File.open("savegame.txt")
+		serialized_object = saveFile.read
+		game_object = YAML::load(serialized_object)
+		puts " Game was loaded successfuly! "
+		#puts game_object
+		@chessboard =  game_object
 	end
 end
 
