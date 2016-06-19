@@ -288,8 +288,69 @@ describe Chessboard do
 	end
 	context "verifies if" do
 		it "check happened" do
+			expect(subject.makeMove("E2-E3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E7-E6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E1-E2")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E8-E7")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E2-D3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E7-F6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("D3-D4")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E3-E4")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E6-E5")).to be_truthy
+			subject.display()
+			expect(subject.check?("E6-E5")).to be_truthy
+			expect(subject.makeMove("E5-D4")).to be_truthy
+			subject.display()
 		end
-		it "mat happened" do
+		it "check did not happen" do
+			expect(subject.makeMove("E2-E3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E7-E6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E1-E2")).to be_truthy
+			subject.display()
+			expect(subject.check?("E1-E2")).to be_falsey
+		end
+		it "mate happened" do
+			expect(subject.makeMove("E2-E3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E7-E6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E1-E2")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E8-E7")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E2-D3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E7-F6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("D3-D4")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E3-E4")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E6-E5")).to be_truthy
+			subject.display()
+			expect(subject.check?("E6-E5")).to be_truthy
+			expect(subject.makeMove("E5-D4")).to be_truthy
+			subject.display()
+			expect(subject.mate?).to be_truthy
+		end
+		it "mate did not happened" do
+			expect(subject.makeMove("E2-E3")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E7-E6")).to be_truthy
+			subject.display()
+			expect(subject.makeMove("E1-E2")).to be_truthy
+			subject.display()
+			expect(subject.mate?).to be_falsey
 		end
 	end
 end

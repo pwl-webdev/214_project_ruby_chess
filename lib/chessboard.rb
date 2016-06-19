@@ -240,7 +240,7 @@ class Chessboard
 	end
 	def validateKing(input)
 		move = input.split("-")
-		if (move[1][0].ord - move[0][0].ord).abs == 1 || (move[1][1].to_i - move[0][1].to_i).abs == 1
+		if (move[1][0].ord - move[0][0].ord).abs <= 1 && (move[1][1].to_i - move[0][1].to_i).abs <= 1
 			if (board[move[0]] == "\u2654") && (black_figures.include?(board[move[1]]) || board[move[1]] == "X")
 				return true
 			elsif (board[move[0]] == "\u265A") && (white_figures.include?(board[move[1]]) || board[move[1]] == "X")
@@ -248,6 +248,49 @@ class Chessboard
 			end	
 		end
 		return false
+	end
+	def check?(input)
+		check = false
+		move = input.split("-")
+		hypotetical_move = ""
+		black_king = board.key("\u265A".encode("utf-8"))
+		white_king = board.key("\u2654".encode("utf-8"))
+		if black_figures.include?(board[move[1]])
+			hypotetical_move = "#{move[1]}-#{white_king}"
+		elsif white_figures.include?(board[move[1]])
+			hypotetical_move = "#{move[1]}-#{black_king}"
+		end
+		case board[move[1]]
+		when "\u2659", "\u265F"
+			check = validatePawn(hypotetical_move)
+		when "\u2658", "\u265E"
+			check = validateKnight(hypotetical_move)
+		when "\u2655", "\u265B"
+			check = validateQueen(hypotetical_move)
+		when "\u2657", "\u265D"
+			check = validateBishop(hypotetical_move)
+		when "\u2656", "\u265C"
+			check = validateRook(hypotetical_move)
+		when "\u2654", "\u265A"
+			check = validateKing(hypotetical_move)
+		end
+		if check
+			puts "check! #{hypotetical_move}"
+		end
+		return check
+	end
+	def mate?
+		#puts board.key("\u265A".encode("utf-8"))
+		#puts board.key("\u2654".encode("utf-8"))
+		if board.key("\u265A".encode("utf-8")) == nil
+			puts "Mate! Blacks lost"
+			return true
+		elsif board.key("\u2654".encode("utf-8")) == nil
+			puts "Mate! Whites lost"
+			return true
+		else
+			return false
+		end
 	end
 	private
 	def updateBoard(input)
